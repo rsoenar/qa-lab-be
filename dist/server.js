@@ -22,7 +22,7 @@ var _websocket = require("./handlers/websocket");
 var _log = require("./utils/log");
 var _schedule = require("./utils/schedule");
 var _mongoose3 = require("./config/mongoose");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 /* eslint-disable no-console */
 
 var app = (0, _express["default"])();

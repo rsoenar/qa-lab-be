@@ -13,11 +13,11 @@ var _excluded = ["_id", "__v", "revised", "creator", "solutionTargetLimits", "so
   _excluded2 = ["_id", "__v", "creator", "verifier"],
   _excluded3 = ["_id", "__v", "revised", "creator", "solutionTargetLimits", "solutionSpecificationReferences", "analysisSolutions", "records"],
   _excluded4 = ["_id", "__v", "creator", "verifier"];
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], t.indexOf(o) >= 0 || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
+function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (e.indexOf(n) >= 0) continue; t[n] = r[n]; } return t; }
 var router = (0, _express.Router)();
-var _default = function _default(io) {
+var _default = exports["default"] = function _default(io) {
   router.route('/worksheet/all').get(function (_req, res) {
     var qaChemicalSolutionControlWorksheets = [];
     _ChemicalSolutionControlWorksheet["default"].find().populate('revisedWorksheet').populate('creator').populate('records.creator').populate('records.verifier').lean().then(function (results) {
@@ -188,7 +188,7 @@ var _default = function _default(io) {
       _id: ChemicalSolutionControlWorksheetId
     }).then(function (result) {
       var _result$records;
-      if ((result === null || result === void 0 ? void 0 : (_result$records = result.records) === null || _result$records === void 0 ? void 0 : _result$records.length) > 0) {
+      if ((result === null || result === void 0 || (_result$records = result.records) === null || _result$records === void 0 ? void 0 : _result$records.length) > 0) {
         body.creationDate = result === null || result === void 0 ? void 0 : result.creationDate;
         body.records = result === null || result === void 0 ? void 0 : result.records;
         return _ChemicalSolutionControlWorksheet["default"].updateOne({
@@ -385,4 +385,3 @@ var _default = function _default(io) {
   });
   return router;
 };
-exports["default"] = _default;

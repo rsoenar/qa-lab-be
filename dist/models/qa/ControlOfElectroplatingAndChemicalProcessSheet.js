@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 var _mongoose = _interopRequireDefault(require("mongoose"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 // Schemas
 var Schema = _mongoose["default"].Schema;
 var SurfaceTreatmentSchema = new Schema({
@@ -402,5 +402,4 @@ ControlOfElectroplatingAndChemicalProcessSheetSchema.set('toObject', {
     delete ret.__v;
   }
 });
-var _default = _mongoose["default"].model('qa.control_of_electroplating_and_chemical_process_sheets', ControlOfElectroplatingAndChemicalProcessSheetSchema);
-exports["default"] = _default;
+var _default = exports["default"] = _mongoose["default"].model('qa.control_of_electroplating_and_chemical_process_sheets', ControlOfElectroplatingAndChemicalProcessSheetSchema);

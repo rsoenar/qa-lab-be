@@ -1,7 +1,7 @@
 "use strict";
 
 var _log4js = _interopRequireDefault(require("log4js"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 _log4js["default"].configure({
   appenders: {
     backend: {

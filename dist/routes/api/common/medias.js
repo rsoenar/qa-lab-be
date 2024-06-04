@@ -7,9 +7,9 @@ exports["default"] = void 0;
 var _express = require("express");
 var _Media = _interopRequireDefault(require("../../../models/common/Media"));
 var _log = require("../../../utils/log");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var router = (0, _express.Router)();
-var _default = function _default() {
+var _default = exports["default"] = function _default() {
   router.route('/all').get(function (_req, res) {
     _Media["default"].find().populate('uploader').then(function (medias) {
       return res.status(200).json({
@@ -26,4 +26,3 @@ var _default = function _default() {
   });
   return router;
 };
-exports["default"] = _default;

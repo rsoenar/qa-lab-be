@@ -10,9 +10,9 @@ var _ControlOfElectroplatingAndChemicalProcessTemplate = _interopRequireDefault(
 var _errorManager = require("../../../utils/errors/errorManager");
 var _io = require("../../../utils/io");
 var _date = require("../../../utils/date");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var router = (0, _express.Router)();
-var _default = function _default(io) {
+var _default = exports["default"] = function _default(io) {
   var setSignedDate = function setSignedDate(doc) {
     var operator = doc.operator,
       inspector = doc.inspector,
@@ -102,7 +102,7 @@ var _default = function _default(io) {
   router.route('/templates/:templateId')["delete"](_io.electroplatingChemicalProcessControlUpload.single('file'), function (req, res, next) {
     var _req$params;
     _ControlOfElectroplatingAndChemicalProcessTemplate["default"].findOneAndDelete({
-      _id: req === null || req === void 0 ? void 0 : (_req$params = req.params) === null || _req$params === void 0 ? void 0 : _req$params.templateId
+      _id: req === null || req === void 0 || (_req$params = req.params) === null || _req$params === void 0 ? void 0 : _req$params.templateId
     }).then(function (deleted) {
       if (deleted == null) {
         throw new _errorManager.NotFoundError('Template ID was not found');
@@ -192,7 +192,7 @@ var _default = function _default(io) {
   router.route('/sheets/:sheetId')["delete"](_io.electroplatingChemicalProcessControlUpload.single('file'), function (req, res, next) {
     var _req$params2;
     _ControlOfElectroplatingAndChemicalProcessSheet["default"].findOneAndDelete({
-      _id: req === null || req === void 0 ? void 0 : (_req$params2 = req.params) === null || _req$params2 === void 0 ? void 0 : _req$params2.sheetId
+      _id: req === null || req === void 0 || (_req$params2 = req.params) === null || _req$params2 === void 0 ? void 0 : _req$params2.sheetId
     }).then(function (deleted) {
       if (deleted == null) {
         throw new _errorManager.NotFoundError('Sheet ID was not found');
@@ -210,4 +210,3 @@ var _default = function _default(io) {
   });
   return router;
 };
-exports["default"] = _default;
