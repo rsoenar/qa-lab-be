@@ -313,7 +313,7 @@ export default (io) => {
 		});
 	};
 
-	const generateQaLaboratoryTestReportPdf = function (qaLaboratoryTestId) {
+	const generateQaLaboratoryTestReportPdf = function (qaLaboratoryTestId, id) {
 		return new Promise((resolve) => {
 			LaboratoryTest.findById(qaLaboratoryTestId).then((qaLaboratoryTest) => {
 				LaboratoryTestRequest.findById(
@@ -325,9 +325,10 @@ export default (io) => {
 					.populate('requestApprover')
 					.then((qaLaboratoryTestRequest) => {
 						LaboratoryTestReport.findById(
-							qaLaboratoryTest?.qaLaboratoryTestReports[
-								qaLaboratoryTest?.qaLaboratoryTestReports?.length - 1
-							]
+							id ??
+								qaLaboratoryTest?.qaLaboratoryTestReports[
+									qaLaboratoryTest?.qaLaboratoryTestReports?.length - 1
+								]
 						)
 							.populate('reporter')
 							.populate('reportApprover')
@@ -1939,6 +1940,108 @@ export default (io) => {
 				workbook.xlsx.write(res).then(function () {
 					res.end();
 				});
+			});
+	});
+
+	router.route('/regenerate-pdfs').post((_req, res) => {
+		let qaLaboratoryTests = [];
+
+		LaboratoryTest.find()
+			.populate({
+				path: 'qaLaboratoryTestRequests',
+				model: 'qa.laboratory_test_requests',
+				populate: [
+					{
+						path: 'requester',
+						model: 'users',
+					},
+					{
+						path: 'requestApprover',
+						model: 'users',
+					},
+					{
+						path: 'requestReceiver',
+						model: 'users',
+					},
+				],
+			})
+			.populate({
+				path: 'qaLaboratoryTestReports',
+				model: 'qa.laboratory_test_reports',
+				populate: [
+					{
+						path: 'reporter',
+						model: 'users',
+					},
+					{
+						path: 'reportApprover',
+						model: 'users',
+					},
+				],
+			})
+			.lean()
+			.then((results) => {
+				for (let i = 0; i < results.length; i++) {
+					const qaLaboratoryTest = results[i];
+					const qaLaboratoryTestRequests =
+						qaLaboratoryTest?.qaLaboratoryTestRequests;
+					const qaLaboratoryTestReports =
+						qaLaboratoryTest?.qaLaboratoryTestReports;
+
+					const e = {};
+
+					e.id = qaLaboratoryTest?._id;
+					e.requestIds = [];
+
+					for (let i = 0; i < qaLaboratoryTestRequests.length; i++) {
+						const f = qaLaboratoryTestRequests[i];
+
+						e.requestIds?.push(f?._id);
+					}
+
+					e.reportIds = [];
+
+					for (let i = 0; i < qaLaboratoryTestReports.length; i++) {
+						const f = qaLaboratoryTestReports[i];
+
+						e.reportIds?.push(f?._id);
+					}
+
+					qaLaboratoryTests.push(e);
+				}
+
+				qaLaboratoryTests = qaLaboratoryTests.sort(
+					(a, b) => b?.requestDate - a?.requestDate
+				);
+
+				const promises = [];
+				qaLaboratoryTests.forEach((test) => {
+					test.requestIds.forEach((requestId) => {
+						promises.push(generateQaLaboratoryTestRequestPdf(requestId));
+					});
+
+					test.reportIds.forEach((reportId) => {
+						promises.push(generateQaLaboratoryTestReportPdf(e.id, reportId));
+					});
+				});
+
+				Promise.all(promises)
+					.then(() => {
+						console.log('All PDFs regenerated successfully.');
+					})
+					.catch((err) => {
+						log(err);
+					});
+
+				return res.status(200).json({
+					success: !!results,
+					message: null,
+					data: 'Processing',
+				});
+			})
+			.catch((err) => {
+				log(err);
+				res.status(500).json(err);
 			});
 	});
 
