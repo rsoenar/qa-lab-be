@@ -2025,6 +2025,12 @@ export default (io) => {
 					});
 				});
 
+				res.status(200).json({
+					success: true,
+					message: 'Processing PDFs. Please check back later for status.',
+					data: null,
+				});
+
 				Promise.all(promises)
 					.then(() => {
 						console.log('All PDFs regenerated successfully.');
@@ -2032,12 +2038,6 @@ export default (io) => {
 					.catch((err) => {
 						log(err);
 					});
-
-				return res.status(200).json({
-					success: !!results,
-					message: null,
-					data: 'Processing',
-				});
 			})
 			.catch((err) => {
 				log(err);
