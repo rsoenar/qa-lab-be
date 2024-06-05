@@ -2054,7 +2054,7 @@ export default (io) => {
 					}
 				};
 
-				processPromisesInBatches(promises, batchSize)
+				processPromisesInBatches(promises)
 					.then(() => {
 						console.log('All PDFs regenerated successfully.');
 					})
