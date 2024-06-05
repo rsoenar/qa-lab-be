@@ -2041,7 +2041,7 @@ export default (io) => {
 					return result;
 				};
 
-				const processPromisesInBatches = async (promises, batchSize = 5) => {
+				const processPromisesInBatches = async (promises, batchSize = 2) => {
 					const chunks = chunkArray(promises, batchSize);
 
 					for (let i = 0; i < chunks.length; i++) {
