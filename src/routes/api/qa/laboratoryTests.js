@@ -2021,7 +2021,7 @@ export default (io) => {
 					});
 
 					test.reportIds.forEach((reportId) => {
-						promises.push(generateQaLaboratoryTestReportPdf(e.id, reportId));
+						promises.push(generateQaLaboratoryTestReportPdf(test.id, reportId));
 					});
 				});
 
