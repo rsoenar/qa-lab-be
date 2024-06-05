@@ -2027,16 +2027,39 @@ export default (io) => {
 
 				res.status(200).json({
 					success: true,
-					message: 'Processing PDFs. Please check back later for status.',
+					message: 'Processing PDFs.',
 					data: null,
 				});
 
-				Promise.all(promises)
+				const chunkArray = (array, size) => {
+					const result = [];
+
+					for (let i = 0; i < array.length; i += size) {
+						result.push(array.slice(i, i + size));
+					}
+
+					return result;
+				};
+
+				const processPromisesInBatches = async (promises, batchSize = 5) => {
+					const chunks = chunkArray(promises, batchSize);
+
+					for (let i = 0; i < chunks.length; i++) {
+						await Promise.all(chunks[i]);
+						console.log(
+							`Batch ${i + 1} of ${
+								chunks.length
+							} pdfs regeneration processed successfully.`
+						);
+					}
+				};
+
+				processPromisesInBatches(promises, batchSize)
 					.then(() => {
 						console.log('All PDFs regenerated successfully.');
 					})
 					.catch((err) => {
-						log(err);
+						console.log(err);
 					});
 			})
 			.catch((err) => {
