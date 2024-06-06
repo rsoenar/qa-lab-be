@@ -2014,14 +2014,18 @@ export default (io) => {
 					(a, b) => b?.requestDate - a?.requestDate
 				);
 
-				const promises = [];
+				const requestPromises = [];
+				const reportPromises = [];
+
 				qaLaboratoryTests.forEach((test) => {
 					test.requestIds.forEach((requestId) => {
-						promises.push(generateQaLaboratoryTestRequestPdf(requestId));
+						requestPromises.push(generateQaLaboratoryTestRequestPdf(requestId));
 					});
 
 					test.reportIds.forEach((reportId) => {
-						promises.push(generateQaLaboratoryTestReportPdf(test.id, reportId));
+						reportPromises.push(() =>
+							generateQaLaboratoryTestReportPdf(test.id, reportId)
+						);
 					});
 				});
 
@@ -2041,26 +2045,59 @@ export default (io) => {
 					return result;
 				};
 
-				const processPromisesInBatches = async (promises, batchSize = 2) => {
+				const processPromisesInBatches = async (
+					promises,
+					batchSize = 10,
+					logFrequency = 1000
+				) => {
 					const chunks = chunkArray(promises, batchSize);
+					let totalProcessed = 0;
 
 					for (let i = 0; i < chunks.length; i++) {
 						await Promise.all(chunks[i]);
-						console.log(
-							`Batch ${i + 1} of ${
-								chunks.length
-							} pdfs regeneration processed successfully.`
-						);
+						totalProcessed += chunks[i].length;
+
+						if (
+							totalProcessed % logFrequency < batchSize ||
+							totalProcessed === promises.length
+						) {
+							console.log(
+								`Request PDF ${totalProcessed} of ${promises.length} processed successfully.`
+							);
+						}
 					}
 				};
 
-				processPromisesInBatches(promises)
-					.then(() => {
-						console.log('All PDFs regenerated successfully.');
-					})
-					.catch((err) => {
+				const processPromisesSequentiallyWithDelay = async (
+					promises,
+					delay = 1500
+				) => {
+					for (let i = 0; i < promises.length; i++) {
+						await promises[i]();
+						if ((i + 1) % 100 === 0 || i === promises.length - 1) {
+							console.log(
+								`Report PDF ${i + 1} of ${
+									promises.length
+								} processed successfully.`
+							);
+						}
+						if (i < promises.length - 1) {
+							await new Promise((resolve) => setTimeout(resolve, delay));
+						}
+					}
+				};
+
+				(async () => {
+					try {
+						await processPromisesInBatches(requestPromises);
+						console.log('All request PDFs generated successfully.');
+
+						await processPromisesSequentiallyWithDelay(reportPromises);
+						console.log('All report PDFs generated successfully.');
+					} catch (err) {
 						console.log(err);
-					});
+					}
+				})();
 			})
 			.catch((err) => {
 				log(err);
