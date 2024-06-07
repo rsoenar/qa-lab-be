@@ -2070,11 +2070,12 @@ export default (io) => {
 
 				const processPromisesSequentiallyWithDelay = async (
 					promises,
-					delay = 1500
+					delay = 500,
+					logFrequency = 1000
 				) => {
 					for (let i = 0; i < promises.length; i++) {
 						await promises[i]();
-						if ((i + 1) % 100 === 0 || i === promises.length - 1) {
+						if ((i + 1) % logFrequency === 0 || i === promises.length - 1) {
 							console.log(
 								`Report PDF ${i + 1} of ${
 									promises.length
