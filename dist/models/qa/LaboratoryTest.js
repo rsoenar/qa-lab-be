@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 var _mongoose = _interopRequireDefault(require("mongoose"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var Schema = _mongoose["default"].Schema;
 var LaboratoryTestSchema = new Schema({
   qaLaboratoryTestRequests: [{
@@ -36,5 +36,4 @@ LaboratoryTestSchema.set('toObject', {
     delete ret.__v;
   }
 });
-var _default = _mongoose["default"].model('qa.laboratory_tests', LaboratoryTestSchema);
-exports["default"] = _default;
+var _default = exports["default"] = _mongoose["default"].model('qa.laboratory_tests', LaboratoryTestSchema);

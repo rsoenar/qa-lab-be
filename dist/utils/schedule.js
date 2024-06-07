@@ -3,7 +3,7 @@
 var _nodeSchedule = _interopRequireDefault(require("node-schedule"));
 var _child_process = require("child_process");
 var _log = require("./log");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function scheduleMongoDbBackup() {
   _nodeSchedule["default"].scheduleJob('00 23 * * *', function () {
     var dailyBackup = (0, _child_process.spawn)('mongodump', ['--db=iae_server', '--gzip', '-o', 'public/backup/mongodb/iae_server_daily']);

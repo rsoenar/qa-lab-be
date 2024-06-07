@@ -20,9 +20,9 @@ var _log = require("../../../utils/log");
 var _excel = require("../../../utils/excel");
 var _url = require("../../../constants/url");
 var _excluded = ["reporter", "reportApprover"];
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], t.indexOf(o) >= 0 || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
+function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (e.indexOf(n) >= 0) continue; t[n] = r[n]; } return t; }
 // polyfills required by exceljs
 require('core-js/modules/es.promise');
 require('core-js/modules/es.string.includes');
@@ -33,7 +33,7 @@ require('core-js/modules/es.symbol.async-iterator');
 require('regenerator-runtime/runtime');
 var ExcelJS = require('exceljs/dist/es5');
 var router = (0, _express.Router)();
-var _default = function _default(io) {
+var _default = exports["default"] = function _default(io) {
   var logoImage = _path["default"].join(__dirname, '../../../../public/assets/img', 'iae-logo.png');
   var generateQaLaboratoryTestRequestPdf = function generateQaLaboratoryTestRequestPdf(id) {
     return new Promise(function (resolve) {
@@ -146,16 +146,16 @@ var _default = function _default(io) {
       });
     });
   };
-  var generateQaLaboratoryTestReportPdf = function generateQaLaboratoryTestReportPdf(qaLaboratoryTestId) {
+  var generateQaLaboratoryTestReportPdf = function generateQaLaboratoryTestReportPdf(qaLaboratoryTestId, id) {
     return new Promise(function (resolve) {
       _LaboratoryTest["default"].findById(qaLaboratoryTestId).then(function (qaLaboratoryTest) {
         var _qaLaboratoryTest$qaL;
-        _LaboratoryTestRequest["default"].findById(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL = qaLaboratoryTest.qaLaboratoryTestRequests) === null || _qaLaboratoryTest$qaL === void 0 ? void 0 : _qaLaboratoryTest$qaL.length) - 1]).populate('requester').populate('requestApprover').then(function (qaLaboratoryTestRequest) {
+        _LaboratoryTestRequest["default"].findById(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL = qaLaboratoryTest.qaLaboratoryTestRequests) === null || _qaLaboratoryTest$qaL === void 0 ? void 0 : _qaLaboratoryTest$qaL.length) - 1]).populate('requester').populate('requestApprover').then(function (qaLaboratoryTestRequest) {
           var _qaLaboratoryTest$qaL2;
-          _LaboratoryTestReport["default"].findById(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL2 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL2 === void 0 ? void 0 : _qaLaboratoryTest$qaL2.length) - 1]).populate('reporter').populate('reportApprover').then(function (qaLaboratoryTestReport) {
+          _LaboratoryTestReport["default"].findById(id !== null && id !== void 0 ? id : qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL2 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL2 === void 0 ? void 0 : _qaLaboratoryTest$qaL2.length) - 1]).populate('reporter').populate('reportApprover').then(function (qaLaboratoryTestReport) {
             var _qaLaboratoryTestRepo, _qaLaboratoryTestRepo2;
-            var reporterSignature = _path["default"].join(__dirname, '../../../../public/assets/img/user/signature', "".concat(qaLaboratoryTestReport === null || qaLaboratoryTestReport === void 0 ? void 0 : (_qaLaboratoryTestRepo = qaLaboratoryTestReport.reporter) === null || _qaLaboratoryTestRepo === void 0 ? void 0 : _qaLaboratoryTestRepo.nik, ".jpg"));
-            var reportApproverSignature = _path["default"].join(__dirname, '../../../../public/assets/img/user/signature', "".concat(qaLaboratoryTestReport === null || qaLaboratoryTestReport === void 0 ? void 0 : (_qaLaboratoryTestRepo2 = qaLaboratoryTestReport.reportApprover) === null || _qaLaboratoryTestRepo2 === void 0 ? void 0 : _qaLaboratoryTestRepo2.nik, ".jpg"));
+            var reporterSignature = _path["default"].join(__dirname, '../../../../public/assets/img/user/signature', "".concat(qaLaboratoryTestReport === null || qaLaboratoryTestReport === void 0 || (_qaLaboratoryTestRepo = qaLaboratoryTestReport.reporter) === null || _qaLaboratoryTestRepo === void 0 ? void 0 : _qaLaboratoryTestRepo.nik, ".jpg"));
+            var reportApproverSignature = _path["default"].join(__dirname, '../../../../public/assets/img/user/signature', "".concat(qaLaboratoryTestReport === null || qaLaboratoryTestReport === void 0 || (_qaLaboratoryTestRepo2 = qaLaboratoryTestReport.reportApprover) === null || _qaLaboratoryTestRepo2 === void 0 ? void 0 : _qaLaboratoryTestRepo2.nik, ".jpg"));
             if (qaLaboratoryTestRequest && qaLaboratoryTestReport) {
               var requestDate = qaLaboratoryTestRequest.requestDate,
                 requestNumber = qaLaboratoryTestRequest.requestNumber,
@@ -293,13 +293,13 @@ var _default = function _default(io) {
       }]
     }).lean().then(function (results) {
       for (var i = 0; i < results.length; i++) {
-        var _qaLaboratoryTestRequ, _qaLaboratoryTestRepo3, _qaLaboratoryTest, _requester$organizati, _requester$organizati2, _requester$name2, _requester$nik2, _requester$organizati3, _requestApprover$name2, _requestApprover$nik2, _requestReceiver$name, _reporter$name2, _reporter$nik2, _reportApprover$name2, _reportApprover$nik2;
+        var _requester$organizati, _requester$organizati2, _requester$name2, _requester$nik2, _requester$organizati3, _requestApprover$name2, _requestApprover$nik2, _requestReceiver$name, _reporter$name2, _reporter$nik2, _reportApprover$name2, _reportApprover$nik2;
         var qaLaboratoryTest = results[i];
         var qaLaboratoryTestRequests = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests;
         var qaLaboratoryTestReports = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports;
         var qaLaboratoryTestRequest = qaLaboratoryTestRequests[(qaLaboratoryTestRequests === null || qaLaboratoryTestRequests === void 0 ? void 0 : qaLaboratoryTestRequests.length) - 1];
         var qaLaboratoryTestReport = qaLaboratoryTestReports[(qaLaboratoryTestReports === null || qaLaboratoryTestReports === void 0 ? void 0 : qaLaboratoryTestReports.length) - 1];
-        var _ref = (_qaLaboratoryTestRequ = qaLaboratoryTestRequest) !== null && _qaLaboratoryTestRequ !== void 0 ? _qaLaboratoryTestRequ : {},
+        var _ref = qaLaboratoryTestRequest !== null && qaLaboratoryTestRequest !== void 0 ? qaLaboratoryTestRequest : {},
           requestDate = _ref.requestDate,
           requestNumber = _ref.requestNumber,
           laboratory = _ref.laboratory,
@@ -329,7 +329,7 @@ var _default = function _default(io) {
           estimationCloseDate = _ref.estimationCloseDate,
           requestReceiver = _ref.requestReceiver,
           tempReportNumber = _ref.tempReportNumber;
-        var _ref2 = (_qaLaboratoryTestRepo3 = qaLaboratoryTestReport) !== null && _qaLaboratoryTestRepo3 !== void 0 ? _qaLaboratoryTestRepo3 : {},
+        var _ref2 = qaLaboratoryTestReport !== null && qaLaboratoryTestReport !== void 0 ? qaLaboratoryTestReport : {},
           reportDate = _ref2.reportDate,
           reportNumber = _ref2.reportNumber,
           testResult = _ref2.testResult,
@@ -338,81 +338,81 @@ var _default = function _default(io) {
           reporter = _ref2.reporter,
           reportApproveDate = _ref2.reportApproveDate,
           reportApprover = _ref2.reportApprover;
-        var e = {};
-        e.id = (_qaLaboratoryTest = qaLaboratoryTest) === null || _qaLaboratoryTest === void 0 ? void 0 : _qaLaboratoryTest._id;
-        e.requestIds = [];
+        var _e = {};
+        _e.id = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest._id;
+        _e.requestIds = [];
         for (var _i = 0; _i < qaLaboratoryTestRequests.length; _i++) {
           var _e$requestIds;
           var f = qaLaboratoryTestRequests[_i];
-          (_e$requestIds = e.requestIds) === null || _e$requestIds === void 0 ? void 0 : _e$requestIds.push(f === null || f === void 0 ? void 0 : f._id);
+          (_e$requestIds = _e.requestIds) === null || _e$requestIds === void 0 || _e$requestIds.push(f === null || f === void 0 ? void 0 : f._id);
         }
-        e.requestDate = requestDate !== null && requestDate !== void 0 ? requestDate : null;
-        e.requestDateFormated = (0, _date.formatDateDmmyyyy)(requestDate);
-        e.requestNumber = requestNumber !== null && requestNumber !== void 0 ? requestNumber : null;
-        e.laboratory = laboratory !== null && laboratory !== void 0 ? laboratory : null;
-        e.organizationUnit = organizationUnit !== null && organizationUnit !== void 0 ? organizationUnit : null;
-        e.material = material !== null && material !== void 0 ? material : null;
-        e.type = type !== null && type !== void 0 ? type : null;
-        e.specification = specification !== null && specification !== void 0 ? specification : null;
-        e.program = program !== null && program !== void 0 ? program : null;
-        e.budgetNumber = budgetNumber !== null && budgetNumber !== void 0 ? budgetNumber : null;
-        e.reasonOfTest = reasonOfTest !== null && reasonOfTest !== void 0 ? reasonOfTest : null;
-        e.manufacturer = manufacturer !== null && manufacturer !== void 0 ? manufacturer : null;
-        e.manufacturingDate = manufacturingDate !== null && manufacturingDate !== void 0 ? manufacturingDate : null;
-        e.expiryDate = expiryDate !== null && expiryDate !== void 0 ? expiryDate : null;
-        e.batchNumber = batchNumber !== null && batchNumber !== void 0 ? batchNumber : null;
-        e.sample = sample !== null && sample !== void 0 ? sample : null;
-        e.condition = condition !== null && condition !== void 0 ? condition : null;
-        e.unit = unit !== null && unit !== void 0 ? unit : null;
-        e.quantity = quantity !== null && quantity !== void 0 ? quantity : null;
-        e.typeOfTest = typeOfTest !== null && typeOfTest !== void 0 ? typeOfTest : null;
-        e.organization = (_requester$organizati = requester === null || requester === void 0 ? void 0 : (_requester$organizati2 = requester.organization) === null || _requester$organizati2 === void 0 ? void 0 : _requester$organizati2.substring(0, 2)) !== null && _requester$organizati !== void 0 ? _requester$organizati : null;
-        e.testAccordingToSpecification = testAccordingToSpecification !== null && testAccordingToSpecification !== void 0 ? testAccordingToSpecification : null;
-        e.requestAttachmentFileName = requestAttachmentFileName !== null && requestAttachmentFileName !== void 0 ? requestAttachmentFileName : null;
-        e.requestAttachmentFileOriginalName = requestAttachmentFileOriginalName !== null && requestAttachmentFileOriginalName !== void 0 ? requestAttachmentFileOriginalName : null;
-        e.requesterName = (_requester$name2 = requester === null || requester === void 0 ? void 0 : requester.name) !== null && _requester$name2 !== void 0 ? _requester$name2 : null;
-        e.requesterNik = (_requester$nik2 = requester === null || requester === void 0 ? void 0 : requester.nik) !== null && _requester$nik2 !== void 0 ? _requester$nik2 : null;
-        e.requesterOrganization = (_requester$organizati3 = requester === null || requester === void 0 ? void 0 : requester.organization) !== null && _requester$organizati3 !== void 0 ? _requester$organizati3 : null;
-        e.requestApproveDate = requestApproveDate !== null && requestApproveDate !== void 0 ? requestApproveDate : null;
-        e.requestApproveDateFormated = (0, _date.formatDateDmmyyyy)(requestApproveDate);
-        e.requestApproverName = (_requestApprover$name2 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.name) !== null && _requestApprover$name2 !== void 0 ? _requestApprover$name2 : null;
-        e.requestApproverNik = (_requestApprover$nik2 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.nik) !== null && _requestApprover$nik2 !== void 0 ? _requestApprover$nik2 : null;
-        e.requestReceiveDate = requestReceiveDate !== null && requestReceiveDate !== void 0 ? requestReceiveDate : null;
-        e.requestReceiveDateFormated = (0, _date.formatDateDmmyyyy)(requestReceiveDate);
-        e.estimationCloseDate = estimationCloseDate !== null && estimationCloseDate !== void 0 ? estimationCloseDate : null;
-        e.estimationCloseDateFormated = (0, _date.formatDateDmmyyyy)(estimationCloseDate);
-        e.requestReceiverName = (_requestReceiver$name = requestReceiver === null || requestReceiver === void 0 ? void 0 : requestReceiver.name) !== null && _requestReceiver$name !== void 0 ? _requestReceiver$name : null;
-        e.tempReportNumber = tempReportNumber !== null && tempReportNumber !== void 0 ? tempReportNumber : null;
-        e.reportIds = [];
+        _e.requestDate = requestDate !== null && requestDate !== void 0 ? requestDate : null;
+        _e.requestDateFormated = (0, _date.formatDateDmmyyyy)(requestDate);
+        _e.requestNumber = requestNumber !== null && requestNumber !== void 0 ? requestNumber : null;
+        _e.laboratory = laboratory !== null && laboratory !== void 0 ? laboratory : null;
+        _e.organizationUnit = organizationUnit !== null && organizationUnit !== void 0 ? organizationUnit : null;
+        _e.material = material !== null && material !== void 0 ? material : null;
+        _e.type = type !== null && type !== void 0 ? type : null;
+        _e.specification = specification !== null && specification !== void 0 ? specification : null;
+        _e.program = program !== null && program !== void 0 ? program : null;
+        _e.budgetNumber = budgetNumber !== null && budgetNumber !== void 0 ? budgetNumber : null;
+        _e.reasonOfTest = reasonOfTest !== null && reasonOfTest !== void 0 ? reasonOfTest : null;
+        _e.manufacturer = manufacturer !== null && manufacturer !== void 0 ? manufacturer : null;
+        _e.manufacturingDate = manufacturingDate !== null && manufacturingDate !== void 0 ? manufacturingDate : null;
+        _e.expiryDate = expiryDate !== null && expiryDate !== void 0 ? expiryDate : null;
+        _e.batchNumber = batchNumber !== null && batchNumber !== void 0 ? batchNumber : null;
+        _e.sample = sample !== null && sample !== void 0 ? sample : null;
+        _e.condition = condition !== null && condition !== void 0 ? condition : null;
+        _e.unit = unit !== null && unit !== void 0 ? unit : null;
+        _e.quantity = quantity !== null && quantity !== void 0 ? quantity : null;
+        _e.typeOfTest = typeOfTest !== null && typeOfTest !== void 0 ? typeOfTest : null;
+        _e.organization = (_requester$organizati = requester === null || requester === void 0 || (_requester$organizati2 = requester.organization) === null || _requester$organizati2 === void 0 ? void 0 : _requester$organizati2.substring(0, 2)) !== null && _requester$organizati !== void 0 ? _requester$organizati : null;
+        _e.testAccordingToSpecification = testAccordingToSpecification !== null && testAccordingToSpecification !== void 0 ? testAccordingToSpecification : null;
+        _e.requestAttachmentFileName = requestAttachmentFileName !== null && requestAttachmentFileName !== void 0 ? requestAttachmentFileName : null;
+        _e.requestAttachmentFileOriginalName = requestAttachmentFileOriginalName !== null && requestAttachmentFileOriginalName !== void 0 ? requestAttachmentFileOriginalName : null;
+        _e.requesterName = (_requester$name2 = requester === null || requester === void 0 ? void 0 : requester.name) !== null && _requester$name2 !== void 0 ? _requester$name2 : null;
+        _e.requesterNik = (_requester$nik2 = requester === null || requester === void 0 ? void 0 : requester.nik) !== null && _requester$nik2 !== void 0 ? _requester$nik2 : null;
+        _e.requesterOrganization = (_requester$organizati3 = requester === null || requester === void 0 ? void 0 : requester.organization) !== null && _requester$organizati3 !== void 0 ? _requester$organizati3 : null;
+        _e.requestApproveDate = requestApproveDate !== null && requestApproveDate !== void 0 ? requestApproveDate : null;
+        _e.requestApproveDateFormated = (0, _date.formatDateDmmyyyy)(requestApproveDate);
+        _e.requestApproverName = (_requestApprover$name2 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.name) !== null && _requestApprover$name2 !== void 0 ? _requestApprover$name2 : null;
+        _e.requestApproverNik = (_requestApprover$nik2 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.nik) !== null && _requestApprover$nik2 !== void 0 ? _requestApprover$nik2 : null;
+        _e.requestReceiveDate = requestReceiveDate !== null && requestReceiveDate !== void 0 ? requestReceiveDate : null;
+        _e.requestReceiveDateFormated = (0, _date.formatDateDmmyyyy)(requestReceiveDate);
+        _e.estimationCloseDate = estimationCloseDate !== null && estimationCloseDate !== void 0 ? estimationCloseDate : null;
+        _e.estimationCloseDateFormated = (0, _date.formatDateDmmyyyy)(estimationCloseDate);
+        _e.requestReceiverName = (_requestReceiver$name = requestReceiver === null || requestReceiver === void 0 ? void 0 : requestReceiver.name) !== null && _requestReceiver$name !== void 0 ? _requestReceiver$name : null;
+        _e.tempReportNumber = tempReportNumber !== null && tempReportNumber !== void 0 ? tempReportNumber : null;
+        _e.reportIds = [];
         for (var _i2 = 0; _i2 < qaLaboratoryTestReports.length; _i2++) {
           var _e$reportIds;
           var _f = qaLaboratoryTestReports[_i2];
-          (_e$reportIds = e.reportIds) === null || _e$reportIds === void 0 ? void 0 : _e$reportIds.push(_f === null || _f === void 0 ? void 0 : _f._id);
+          (_e$reportIds = _e.reportIds) === null || _e$reportIds === void 0 || _e$reportIds.push(_f === null || _f === void 0 ? void 0 : _f._id);
         }
-        e.reportDate = reportDate !== null && reportDate !== void 0 ? reportDate : null;
-        e.reportDateFormated = (0, _date.formatDateDmmyyyy)(reportDate);
-        e.reportNumber = reportNumber !== null && reportNumber !== void 0 ? reportNumber : tempReportNumber;
-        e.testResult = testResult !== null && testResult !== void 0 ? testResult : null;
-        e.reportAttachmentFileName = reportAttachmentFileName !== null && reportAttachmentFileName !== void 0 ? reportAttachmentFileName : null;
-        e.reportAttachmentFileOriginalName = reportAttachmentFileOriginalName !== null && reportAttachmentFileOriginalName !== void 0 ? reportAttachmentFileOriginalName : null;
-        e.reporterName = (_reporter$name2 = reporter === null || reporter === void 0 ? void 0 : reporter.name) !== null && _reporter$name2 !== void 0 ? _reporter$name2 : null;
-        e.reporterNik = (_reporter$nik2 = reporter === null || reporter === void 0 ? void 0 : reporter.nik) !== null && _reporter$nik2 !== void 0 ? _reporter$nik2 : null;
-        e.reportApproveDate = reportApproveDate !== null && reportApproveDate !== void 0 ? reportApproveDate : null;
-        e.reportApproveDateFormated = (0, _date.formatDateDmmyyyy)(reportApproveDate);
-        e.reportApproverName = (_reportApprover$name2 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.name) !== null && _reportApprover$name2 !== void 0 ? _reportApprover$name2 : null;
-        e.reportApproverNik = (_reportApprover$nik2 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.nik) !== null && _reportApprover$nik2 !== void 0 ? _reportApprover$nik2 : null;
+        _e.reportDate = reportDate !== null && reportDate !== void 0 ? reportDate : null;
+        _e.reportDateFormated = (0, _date.formatDateDmmyyyy)(reportDate);
+        _e.reportNumber = reportNumber !== null && reportNumber !== void 0 ? reportNumber : tempReportNumber;
+        _e.testResult = testResult !== null && testResult !== void 0 ? testResult : null;
+        _e.reportAttachmentFileName = reportAttachmentFileName !== null && reportAttachmentFileName !== void 0 ? reportAttachmentFileName : null;
+        _e.reportAttachmentFileOriginalName = reportAttachmentFileOriginalName !== null && reportAttachmentFileOriginalName !== void 0 ? reportAttachmentFileOriginalName : null;
+        _e.reporterName = (_reporter$name2 = reporter === null || reporter === void 0 ? void 0 : reporter.name) !== null && _reporter$name2 !== void 0 ? _reporter$name2 : null;
+        _e.reporterNik = (_reporter$nik2 = reporter === null || reporter === void 0 ? void 0 : reporter.nik) !== null && _reporter$nik2 !== void 0 ? _reporter$nik2 : null;
+        _e.reportApproveDate = reportApproveDate !== null && reportApproveDate !== void 0 ? reportApproveDate : null;
+        _e.reportApproveDateFormated = (0, _date.formatDateDmmyyyy)(reportApproveDate);
+        _e.reportApproverName = (_reportApprover$name2 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.name) !== null && _reportApprover$name2 !== void 0 ? _reportApprover$name2 : null;
+        _e.reportApproverNik = (_reportApprover$nik2 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.nik) !== null && _reportApprover$nik2 !== void 0 ? _reportApprover$nik2 : null;
         if (reportApprover !== null && reportApprover !== void 0 && reportApprover.name) {
-          e.status = 'Completed';
+          _e.status = 'Completed';
         } else if (reporter !== null && reporter !== void 0 && reporter.name) {
-          e.status = 'Report Awaiting Approval';
+          _e.status = 'Report Awaiting Approval';
         } else if (requestReceiver !== null && requestReceiver !== void 0 && requestReceiver.name) {
-          e.status = 'On Process';
+          _e.status = 'On Process';
         } else if (requestApprover !== null && requestApprover !== void 0 && requestApprover.name) {
-          e.status = 'Awaiting Sample';
+          _e.status = 'Awaiting Sample';
         } else {
-          e.status = 'Request Awaiting Approval';
+          _e.status = 'Request Awaiting Approval';
         }
-        qaLaboratoryTests.push(e);
+        qaLaboratoryTests.push(_e);
       }
       qaLaboratoryTests = qaLaboratoryTests.sort(function (a, b) {
         return (b === null || b === void 0 ? void 0 : b.requestDate) - (a === null || a === void 0 ? void 0 : a.requestDate);
@@ -458,7 +458,6 @@ var _default = function _default(io) {
       }]
     }).lean().then(function (results) {
       for (var i = 0; i < results.length; i++) {
-        var _qaLaboratoryTestRequ2, _qaLaboratoryTestRepo4;
         var qaLaboratoryTest = results[i];
         var qaLaboratoryTestRequests = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests;
         var qaLaboratoryTestReports = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports;
@@ -474,7 +473,7 @@ var _default = function _default(io) {
         }
         var startDate = new Date("".concat(+year - 1, "-01-01"));
         var endDate = new Date("".concat(+year, "-12-31"));
-        var _ref3 = (_qaLaboratoryTestRequ2 = qaLaboratoryTestRequest) !== null && _qaLaboratoryTestRequ2 !== void 0 ? _qaLaboratoryTestRequ2 : {},
+        var _ref3 = qaLaboratoryTestRequest !== null && qaLaboratoryTestRequest !== void 0 ? qaLaboratoryTestRequest : {},
           requestDate = _ref3.requestDate,
           requestNumber = _ref3.requestNumber,
           laboratory = _ref3.laboratory,
@@ -504,7 +503,7 @@ var _default = function _default(io) {
           estimationCloseDate = _ref3.estimationCloseDate,
           requestReceiver = _ref3.requestReceiver,
           tempReportNumber = _ref3.tempReportNumber;
-        var _ref4 = (_qaLaboratoryTestRepo4 = qaLaboratoryTestReport) !== null && _qaLaboratoryTestRepo4 !== void 0 ? _qaLaboratoryTestRepo4 : {},
+        var _ref4 = qaLaboratoryTestReport !== null && qaLaboratoryTestReport !== void 0 ? qaLaboratoryTestReport : {},
           reportDate = _ref4.reportDate,
           reportNumber = _ref4.reportNumber,
           testResult = _ref4.testResult,
@@ -514,82 +513,82 @@ var _default = function _default(io) {
           reportApproveDate = _ref4.reportApproveDate,
           reportApprover = _ref4.reportApprover;
         if (new Date(requestDate) >= startDate && new Date(requestDate) <= endDate) {
-          var _qaLaboratoryTest2, _requester$organizati4, _requester$organizati5, _requester$name3, _requester$nik3, _requester$organizati6, _requestApprover$name3, _requestApprover$nik3, _requestReceiver$name2, _reporter$name3, _reporter$nik3, _reportApprover$name3, _reportApprover$nik3;
-          var e = {};
-          e.id = (_qaLaboratoryTest2 = qaLaboratoryTest) === null || _qaLaboratoryTest2 === void 0 ? void 0 : _qaLaboratoryTest2._id;
-          e.requestIds = [];
+          var _requester$organizati4, _requester$organizati5, _requester$name3, _requester$nik3, _requester$organizati6, _requestApprover$name3, _requestApprover$nik3, _requestReceiver$name2, _reporter$name3, _reporter$nik3, _reportApprover$name3, _reportApprover$nik3;
+          var _e2 = {};
+          _e2.id = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest._id;
+          _e2.requestIds = [];
           for (var _i3 = 0; _i3 < qaLaboratoryTestRequests.length; _i3++) {
-            var _e$requestIds2;
+            var _e2$requestIds;
             var f = qaLaboratoryTestRequests[_i3];
-            (_e$requestIds2 = e.requestIds) === null || _e$requestIds2 === void 0 ? void 0 : _e$requestIds2.push(f === null || f === void 0 ? void 0 : f._id);
+            (_e2$requestIds = _e2.requestIds) === null || _e2$requestIds === void 0 || _e2$requestIds.push(f === null || f === void 0 ? void 0 : f._id);
           }
-          e.requestDate = requestDate !== null && requestDate !== void 0 ? requestDate : null;
-          e.requestDateFormated = (0, _date.formatDateDmmyyyy)(requestDate);
-          e.requestNumber = requestNumber !== null && requestNumber !== void 0 ? requestNumber : null;
-          e.laboratory = laboratory !== null && laboratory !== void 0 ? laboratory : null;
-          e.organizationUnit = organizationUnit !== null && organizationUnit !== void 0 ? organizationUnit : null;
-          e.material = material !== null && material !== void 0 ? material : null;
-          e.type = type !== null && type !== void 0 ? type : null;
-          e.specification = specification !== null && specification !== void 0 ? specification : null;
-          e.program = program !== null && program !== void 0 ? program : null;
-          e.budgetNumber = budgetNumber !== null && budgetNumber !== void 0 ? budgetNumber : null;
-          e.reasonOfTest = reasonOfTest !== null && reasonOfTest !== void 0 ? reasonOfTest : null;
-          e.manufacturer = manufacturer !== null && manufacturer !== void 0 ? manufacturer : null;
-          e.manufacturingDate = manufacturingDate !== null && manufacturingDate !== void 0 ? manufacturingDate : null;
-          e.expiryDate = expiryDate !== null && expiryDate !== void 0 ? expiryDate : null;
-          e.batchNumber = batchNumber !== null && batchNumber !== void 0 ? batchNumber : null;
-          e.sample = sample !== null && sample !== void 0 ? sample : null;
-          e.condition = condition !== null && condition !== void 0 ? condition : null;
-          e.unit = unit !== null && unit !== void 0 ? unit : null;
-          e.quantity = quantity !== null && quantity !== void 0 ? quantity : null;
-          e.typeOfTest = typeOfTest !== null && typeOfTest !== void 0 ? typeOfTest : null;
-          e.organization = (_requester$organizati4 = requester === null || requester === void 0 ? void 0 : (_requester$organizati5 = requester.organization) === null || _requester$organizati5 === void 0 ? void 0 : _requester$organizati5.substring(0, 2)) !== null && _requester$organizati4 !== void 0 ? _requester$organizati4 : null;
-          e.testAccordingToSpecification = testAccordingToSpecification !== null && testAccordingToSpecification !== void 0 ? testAccordingToSpecification : null;
-          e.requestAttachmentFileName = requestAttachmentFileName !== null && requestAttachmentFileName !== void 0 ? requestAttachmentFileName : null;
-          e.requestAttachmentFileOriginalName = requestAttachmentFileOriginalName !== null && requestAttachmentFileOriginalName !== void 0 ? requestAttachmentFileOriginalName : null;
-          e.requesterName = (_requester$name3 = requester === null || requester === void 0 ? void 0 : requester.name) !== null && _requester$name3 !== void 0 ? _requester$name3 : null;
-          e.requesterNik = (_requester$nik3 = requester === null || requester === void 0 ? void 0 : requester.nik) !== null && _requester$nik3 !== void 0 ? _requester$nik3 : null;
-          e.requesterOrganization = (_requester$organizati6 = requester === null || requester === void 0 ? void 0 : requester.organization) !== null && _requester$organizati6 !== void 0 ? _requester$organizati6 : null;
-          e.requestApproveDate = requestApproveDate !== null && requestApproveDate !== void 0 ? requestApproveDate : null;
-          e.requestApproveDateFormated = (0, _date.formatDateDmmyyyy)(requestApproveDate);
-          e.requestApproverName = (_requestApprover$name3 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.name) !== null && _requestApprover$name3 !== void 0 ? _requestApprover$name3 : null;
-          e.requestApproverNik = (_requestApprover$nik3 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.nik) !== null && _requestApprover$nik3 !== void 0 ? _requestApprover$nik3 : null;
-          e.requestReceiveDate = requestReceiveDate !== null && requestReceiveDate !== void 0 ? requestReceiveDate : null;
-          e.requestReceiveDateFormated = (0, _date.formatDateDmmyyyy)(requestReceiveDate);
-          e.estimationCloseDate = estimationCloseDate !== null && estimationCloseDate !== void 0 ? estimationCloseDate : null;
-          e.estimationCloseDateFormated = (0, _date.formatDateDmmyyyy)(estimationCloseDate);
-          e.requestReceiverName = (_requestReceiver$name2 = requestReceiver === null || requestReceiver === void 0 ? void 0 : requestReceiver.name) !== null && _requestReceiver$name2 !== void 0 ? _requestReceiver$name2 : null;
-          e.tempReportNumber = tempReportNumber !== null && tempReportNumber !== void 0 ? tempReportNumber : null;
-          e.reportIds = [];
+          _e2.requestDate = requestDate !== null && requestDate !== void 0 ? requestDate : null;
+          _e2.requestDateFormated = (0, _date.formatDateDmmyyyy)(requestDate);
+          _e2.requestNumber = requestNumber !== null && requestNumber !== void 0 ? requestNumber : null;
+          _e2.laboratory = laboratory !== null && laboratory !== void 0 ? laboratory : null;
+          _e2.organizationUnit = organizationUnit !== null && organizationUnit !== void 0 ? organizationUnit : null;
+          _e2.material = material !== null && material !== void 0 ? material : null;
+          _e2.type = type !== null && type !== void 0 ? type : null;
+          _e2.specification = specification !== null && specification !== void 0 ? specification : null;
+          _e2.program = program !== null && program !== void 0 ? program : null;
+          _e2.budgetNumber = budgetNumber !== null && budgetNumber !== void 0 ? budgetNumber : null;
+          _e2.reasonOfTest = reasonOfTest !== null && reasonOfTest !== void 0 ? reasonOfTest : null;
+          _e2.manufacturer = manufacturer !== null && manufacturer !== void 0 ? manufacturer : null;
+          _e2.manufacturingDate = manufacturingDate !== null && manufacturingDate !== void 0 ? manufacturingDate : null;
+          _e2.expiryDate = expiryDate !== null && expiryDate !== void 0 ? expiryDate : null;
+          _e2.batchNumber = batchNumber !== null && batchNumber !== void 0 ? batchNumber : null;
+          _e2.sample = sample !== null && sample !== void 0 ? sample : null;
+          _e2.condition = condition !== null && condition !== void 0 ? condition : null;
+          _e2.unit = unit !== null && unit !== void 0 ? unit : null;
+          _e2.quantity = quantity !== null && quantity !== void 0 ? quantity : null;
+          _e2.typeOfTest = typeOfTest !== null && typeOfTest !== void 0 ? typeOfTest : null;
+          _e2.organization = (_requester$organizati4 = requester === null || requester === void 0 || (_requester$organizati5 = requester.organization) === null || _requester$organizati5 === void 0 ? void 0 : _requester$organizati5.substring(0, 2)) !== null && _requester$organizati4 !== void 0 ? _requester$organizati4 : null;
+          _e2.testAccordingToSpecification = testAccordingToSpecification !== null && testAccordingToSpecification !== void 0 ? testAccordingToSpecification : null;
+          _e2.requestAttachmentFileName = requestAttachmentFileName !== null && requestAttachmentFileName !== void 0 ? requestAttachmentFileName : null;
+          _e2.requestAttachmentFileOriginalName = requestAttachmentFileOriginalName !== null && requestAttachmentFileOriginalName !== void 0 ? requestAttachmentFileOriginalName : null;
+          _e2.requesterName = (_requester$name3 = requester === null || requester === void 0 ? void 0 : requester.name) !== null && _requester$name3 !== void 0 ? _requester$name3 : null;
+          _e2.requesterNik = (_requester$nik3 = requester === null || requester === void 0 ? void 0 : requester.nik) !== null && _requester$nik3 !== void 0 ? _requester$nik3 : null;
+          _e2.requesterOrganization = (_requester$organizati6 = requester === null || requester === void 0 ? void 0 : requester.organization) !== null && _requester$organizati6 !== void 0 ? _requester$organizati6 : null;
+          _e2.requestApproveDate = requestApproveDate !== null && requestApproveDate !== void 0 ? requestApproveDate : null;
+          _e2.requestApproveDateFormated = (0, _date.formatDateDmmyyyy)(requestApproveDate);
+          _e2.requestApproverName = (_requestApprover$name3 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.name) !== null && _requestApprover$name3 !== void 0 ? _requestApprover$name3 : null;
+          _e2.requestApproverNik = (_requestApprover$nik3 = requestApprover === null || requestApprover === void 0 ? void 0 : requestApprover.nik) !== null && _requestApprover$nik3 !== void 0 ? _requestApprover$nik3 : null;
+          _e2.requestReceiveDate = requestReceiveDate !== null && requestReceiveDate !== void 0 ? requestReceiveDate : null;
+          _e2.requestReceiveDateFormated = (0, _date.formatDateDmmyyyy)(requestReceiveDate);
+          _e2.estimationCloseDate = estimationCloseDate !== null && estimationCloseDate !== void 0 ? estimationCloseDate : null;
+          _e2.estimationCloseDateFormated = (0, _date.formatDateDmmyyyy)(estimationCloseDate);
+          _e2.requestReceiverName = (_requestReceiver$name2 = requestReceiver === null || requestReceiver === void 0 ? void 0 : requestReceiver.name) !== null && _requestReceiver$name2 !== void 0 ? _requestReceiver$name2 : null;
+          _e2.tempReportNumber = tempReportNumber !== null && tempReportNumber !== void 0 ? tempReportNumber : null;
+          _e2.reportIds = [];
           for (var _i4 = 0; _i4 < qaLaboratoryTestReports.length; _i4++) {
-            var _e$reportIds2;
+            var _e2$reportIds;
             var _f2 = qaLaboratoryTestReports[_i4];
-            (_e$reportIds2 = e.reportIds) === null || _e$reportIds2 === void 0 ? void 0 : _e$reportIds2.push(_f2 === null || _f2 === void 0 ? void 0 : _f2._id);
+            (_e2$reportIds = _e2.reportIds) === null || _e2$reportIds === void 0 || _e2$reportIds.push(_f2 === null || _f2 === void 0 ? void 0 : _f2._id);
           }
-          e.reportDate = reportDate !== null && reportDate !== void 0 ? reportDate : null;
-          e.reportDateFormated = (0, _date.formatDateDmmyyyy)(reportDate);
-          e.reportNumber = reportNumber !== null && reportNumber !== void 0 ? reportNumber : tempReportNumber;
-          e.testResult = testResult !== null && testResult !== void 0 ? testResult : null;
-          e.reportAttachmentFileName = reportAttachmentFileName !== null && reportAttachmentFileName !== void 0 ? reportAttachmentFileName : null;
-          e.reportAttachmentFileOriginalName = reportAttachmentFileOriginalName !== null && reportAttachmentFileOriginalName !== void 0 ? reportAttachmentFileOriginalName : null;
-          e.reporterName = (_reporter$name3 = reporter === null || reporter === void 0 ? void 0 : reporter.name) !== null && _reporter$name3 !== void 0 ? _reporter$name3 : null;
-          e.reporterNik = (_reporter$nik3 = reporter === null || reporter === void 0 ? void 0 : reporter.nik) !== null && _reporter$nik3 !== void 0 ? _reporter$nik3 : null;
-          e.reportApproveDate = reportApproveDate !== null && reportApproveDate !== void 0 ? reportApproveDate : null;
-          e.reportApproveDateFormated = (0, _date.formatDateDmmyyyy)(reportApproveDate);
-          e.reportApproverName = (_reportApprover$name3 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.name) !== null && _reportApprover$name3 !== void 0 ? _reportApprover$name3 : null;
-          e.reportApproverNik = (_reportApprover$nik3 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.nik) !== null && _reportApprover$nik3 !== void 0 ? _reportApprover$nik3 : null;
+          _e2.reportDate = reportDate !== null && reportDate !== void 0 ? reportDate : null;
+          _e2.reportDateFormated = (0, _date.formatDateDmmyyyy)(reportDate);
+          _e2.reportNumber = reportNumber !== null && reportNumber !== void 0 ? reportNumber : tempReportNumber;
+          _e2.testResult = testResult !== null && testResult !== void 0 ? testResult : null;
+          _e2.reportAttachmentFileName = reportAttachmentFileName !== null && reportAttachmentFileName !== void 0 ? reportAttachmentFileName : null;
+          _e2.reportAttachmentFileOriginalName = reportAttachmentFileOriginalName !== null && reportAttachmentFileOriginalName !== void 0 ? reportAttachmentFileOriginalName : null;
+          _e2.reporterName = (_reporter$name3 = reporter === null || reporter === void 0 ? void 0 : reporter.name) !== null && _reporter$name3 !== void 0 ? _reporter$name3 : null;
+          _e2.reporterNik = (_reporter$nik3 = reporter === null || reporter === void 0 ? void 0 : reporter.nik) !== null && _reporter$nik3 !== void 0 ? _reporter$nik3 : null;
+          _e2.reportApproveDate = reportApproveDate !== null && reportApproveDate !== void 0 ? reportApproveDate : null;
+          _e2.reportApproveDateFormated = (0, _date.formatDateDmmyyyy)(reportApproveDate);
+          _e2.reportApproverName = (_reportApprover$name3 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.name) !== null && _reportApprover$name3 !== void 0 ? _reportApprover$name3 : null;
+          _e2.reportApproverNik = (_reportApprover$nik3 = reportApprover === null || reportApprover === void 0 ? void 0 : reportApprover.nik) !== null && _reportApprover$nik3 !== void 0 ? _reportApprover$nik3 : null;
           if (reportApprover !== null && reportApprover !== void 0 && reportApprover.name) {
-            e.status = 'Completed';
+            _e2.status = 'Completed';
           } else if (reporter !== null && reporter !== void 0 && reporter.name) {
-            e.status = 'Report Awaiting Approval';
+            _e2.status = 'Report Awaiting Approval';
           } else if (requestReceiver !== null && requestReceiver !== void 0 && requestReceiver.name) {
-            e.status = 'On Process';
+            _e2.status = 'On Process';
           } else if (requestApprover !== null && requestApprover !== void 0 && requestApprover.name) {
-            e.status = 'Awaiting Sample';
+            _e2.status = 'Awaiting Sample';
           } else {
-            e.status = 'Request Awaiting Approval';
+            _e2.status = 'Request Awaiting Approval';
           }
-          qaLaboratoryTests.push(e);
+          qaLaboratoryTests.push(_e2);
         }
       }
       qaLaboratoryTests = qaLaboratoryTests.sort(function (a, b) {
@@ -611,8 +610,8 @@ var _default = function _default(io) {
     var _req$file$filename, _req$file, _req$file$originalnam, _req$file2;
     var newDoc = req === null || req === void 0 ? void 0 : req.body;
     newDoc.requestDate = Date.now();
-    newDoc.requestAttachmentFileName = (_req$file$filename = req === null || req === void 0 ? void 0 : (_req$file = req.file) === null || _req$file === void 0 ? void 0 : _req$file.filename) !== null && _req$file$filename !== void 0 ? _req$file$filename : null;
-    newDoc.requestAttachmentFileOriginalName = (_req$file$originalnam = req === null || req === void 0 ? void 0 : (_req$file2 = req.file) === null || _req$file2 === void 0 ? void 0 : _req$file2.originalname) !== null && _req$file$originalnam !== void 0 ? _req$file$originalnam : null;
+    newDoc.requestAttachmentFileName = (_req$file$filename = req === null || req === void 0 || (_req$file = req.file) === null || _req$file === void 0 ? void 0 : _req$file.filename) !== null && _req$file$filename !== void 0 ? _req$file$filename : null;
+    newDoc.requestAttachmentFileOriginalName = (_req$file$originalnam = req === null || req === void 0 || (_req$file2 = req.file) === null || _req$file2 === void 0 ? void 0 : _req$file2.originalname) !== null && _req$file$originalnam !== void 0 ? _req$file$originalnam : null;
     new _LaboratoryTestRequest["default"](newDoc).save().then(function (qaLaboratoryTestRequest) {
       var _id = qaLaboratoryTestRequest._id;
       var saveQaLaboratoryTest = new _LaboratoryTest["default"]({
@@ -638,7 +637,7 @@ var _default = function _default(io) {
     var filter = {
       _id: qaLaboratoryTestId
     };
-    var deleteFile = (req === null || req === void 0 ? void 0 : (_req$body = req.body) === null || _req$body === void 0 ? void 0 : _req$body.file) === 'null';
+    var deleteFile = (req === null || req === void 0 || (_req$body = req.body) === null || _req$body === void 0 ? void 0 : _req$body.file) === 'null';
     var _req$body2 = req === null || req === void 0 ? void 0 : req.body,
       reporter = _req$body2.reporter,
       reportApprover = _req$body2.reportApprover,
@@ -662,13 +661,13 @@ var _default = function _default(io) {
       update.requestAttachmentFileOriginalName = null;
     }
     _LaboratoryTest["default"].findOne(filter).then(function (laboratoryTest) {
-      var _qaLaboratoryTest3, _qaLaboratoryTest4, _qaLaboratoryTest4$qa, _qaLaboratoryTest5, _qaLaboratoryTest6, _qaLaboratoryTest6$qa;
+      var _qaLaboratoryTest, _qaLaboratoryTest2, _qaLaboratoryTest3, _qaLaboratoryTest4;
       var filter = {
         requestNumber: update === null || update === void 0 ? void 0 : update.requestNumber
       };
       qaLaboratoryTest = laboratoryTest;
-      qaLaboratoryTestRequestId = (_qaLaboratoryTest3 = qaLaboratoryTest) === null || _qaLaboratoryTest3 === void 0 ? void 0 : _qaLaboratoryTest3.qaLaboratoryTestRequests[((_qaLaboratoryTest4 = qaLaboratoryTest) === null || _qaLaboratoryTest4 === void 0 ? void 0 : (_qaLaboratoryTest4$qa = _qaLaboratoryTest4.qaLaboratoryTestRequests) === null || _qaLaboratoryTest4$qa === void 0 ? void 0 : _qaLaboratoryTest4$qa.length) - 1];
-      qaLaboratoryTestReportId = (_qaLaboratoryTest5 = qaLaboratoryTest) === null || _qaLaboratoryTest5 === void 0 ? void 0 : _qaLaboratoryTest5.qaLaboratoryTestReports[((_qaLaboratoryTest6 = qaLaboratoryTest) === null || _qaLaboratoryTest6 === void 0 ? void 0 : (_qaLaboratoryTest6$qa = _qaLaboratoryTest6.qaLaboratoryTestReports) === null || _qaLaboratoryTest6$qa === void 0 ? void 0 : _qaLaboratoryTest6$qa.length) - 1];
+      qaLaboratoryTestRequestId = (_qaLaboratoryTest = qaLaboratoryTest) === null || _qaLaboratoryTest === void 0 ? void 0 : _qaLaboratoryTest.qaLaboratoryTestRequests[((_qaLaboratoryTest2 = qaLaboratoryTest) === null || _qaLaboratoryTest2 === void 0 || (_qaLaboratoryTest2 = _qaLaboratoryTest2.qaLaboratoryTestRequests) === null || _qaLaboratoryTest2 === void 0 ? void 0 : _qaLaboratoryTest2.length) - 1];
+      qaLaboratoryTestReportId = (_qaLaboratoryTest3 = qaLaboratoryTest) === null || _qaLaboratoryTest3 === void 0 ? void 0 : _qaLaboratoryTest3.qaLaboratoryTestReports[((_qaLaboratoryTest4 = qaLaboratoryTest) === null || _qaLaboratoryTest4 === void 0 || (_qaLaboratoryTest4 = _qaLaboratoryTest4.qaLaboratoryTestReports) === null || _qaLaboratoryTest4 === void 0 ? void 0 : _qaLaboratoryTest4.length) - 1];
       return _LaboratoryTestRequest["default"].countDocuments(filter);
     }).then(function (count) {
       var filter = {
@@ -761,7 +760,7 @@ var _default = function _default(io) {
     var qaLaboratoryTestRequestId;
     _LaboratoryTest["default"].findOne(filter).then(function (qaLaboratoryTest) {
       var _qaLaboratoryTest$qaL3;
-      qaLaboratoryTestRequestId = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL3 = qaLaboratoryTest.qaLaboratoryTestRequests) === null || _qaLaboratoryTest$qaL3 === void 0 ? void 0 : _qaLaboratoryTest$qaL3.length) - 1];
+      qaLaboratoryTestRequestId = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL3 = qaLaboratoryTest.qaLaboratoryTestRequests) === null || _qaLaboratoryTest$qaL3 === void 0 ? void 0 : _qaLaboratoryTest$qaL3.length) - 1];
       var filter = {
         _id: qaLaboratoryTestRequestId
       };
@@ -810,9 +809,9 @@ var _default = function _default(io) {
       }
       return new Promise(function (resolve) {
         for (var i = 0; i < qaLaboratoryTestRequests.length; i++) {
-          var e = qaLaboratoryTestRequests[i];
-          var _id = e._id,
-            requestAttachmentFileName = e.requestAttachmentFileName;
+          var _e3 = qaLaboratoryTestRequests[i];
+          var _id = _e3._id,
+            requestAttachmentFileName = _e3.requestAttachmentFileName;
           var pdfFilePath = "./public/temp/QA Laboratory Test Request ".concat(_id, ".pdf");
           if (requestAttachmentFileName) {
             var oldFilePath = "./public/uploads/qaLaboratoryTests/".concat(requestAttachmentFileName);
@@ -825,16 +824,16 @@ var _default = function _default(io) {
     }).then(function () {
       return new Promise(function (resolve) {
         for (var i = 0; i < requestAttachmentFileNames.length; i++) {
-          var e = requestAttachmentFileNames[i];
-          _fs["default"].unlink(e, function (err) {
+          var _e4 = requestAttachmentFileNames[i];
+          _fs["default"].unlink(_e4, function (err) {
             if (err) {
               console.error(err);
             }
           });
         }
         for (var _i5 = 0; _i5 < qaLaboratoryTestRequestPdfs.length; _i5++) {
-          var _e = qaLaboratoryTestRequestPdfs[_i5];
-          _fs["default"].unlink(_e, function (err) {
+          var _e5 = qaLaboratoryTestRequestPdfs[_i5];
+          _fs["default"].unlink(_e5, function (err) {
             if (err) {
               console.error(err);
             }
@@ -877,7 +876,7 @@ var _default = function _default(io) {
       return _LaboratoryTest["default"].findOne(filter);
     }).then(function (qaLaboratoryTest) {
       var _qaLaboratoryTest$qaL5;
-      var qaLaboratoryTestRequestId = qaLaboratoryTest.qaLaboratoryTestRequests[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL5 = qaLaboratoryTest.qaLaboratoryTestRequests) === null || _qaLaboratoryTest$qaL5 === void 0 ? void 0 : _qaLaboratoryTest$qaL5.length) - 1];
+      var qaLaboratoryTestRequestId = qaLaboratoryTest.qaLaboratoryTestRequests[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL5 = qaLaboratoryTest.qaLaboratoryTestRequests) === null || _qaLaboratoryTest$qaL5 === void 0 ? void 0 : _qaLaboratoryTest$qaL5.length) - 1];
       var filter = {
         _id: qaLaboratoryTestRequestId
       };
@@ -984,8 +983,8 @@ var _default = function _default(io) {
     };
     var newDoc = req === null || req === void 0 ? void 0 : req.body;
     var qaLaboratoryTestReportId;
-    newDoc.reportAttachmentFileName = (_req$file$filename2 = req === null || req === void 0 ? void 0 : (_req$file4 = req.file) === null || _req$file4 === void 0 ? void 0 : _req$file4.filename) !== null && _req$file$filename2 !== void 0 ? _req$file$filename2 : null;
-    newDoc.reportAttachmentFileOriginalName = (_req$file$originalnam2 = req === null || req === void 0 ? void 0 : (_req$file5 = req.file) === null || _req$file5 === void 0 ? void 0 : _req$file5.originalname) !== null && _req$file$originalnam2 !== void 0 ? _req$file$originalnam2 : null;
+    newDoc.reportAttachmentFileName = (_req$file$filename2 = req === null || req === void 0 || (_req$file4 = req.file) === null || _req$file4 === void 0 ? void 0 : _req$file4.filename) !== null && _req$file$filename2 !== void 0 ? _req$file$filename2 : null;
+    newDoc.reportAttachmentFileOriginalName = (_req$file$originalnam2 = req === null || req === void 0 || (_req$file5 = req.file) === null || _req$file5 === void 0 ? void 0 : _req$file5.originalname) !== null && _req$file$originalnam2 !== void 0 ? _req$file$originalnam2 : null;
     _LaboratoryTest["default"].findOne(filter).then(function (qaLaboratoryTest) {
       var qaLaboratoryTestReports = qaLaboratoryTest.qaLaboratoryTestReports;
       if (qaLaboratoryTestReports && (qaLaboratoryTestReports === null || qaLaboratoryTestReports === void 0 ? void 0 : qaLaboratoryTestReports.length) > 1) {
@@ -1001,7 +1000,7 @@ var _default = function _default(io) {
       return _LaboratoryTest["default"].findOne(filter);
     }).then(function (qaLaboratoryTest) {
       var _qaLaboratoryTest$qaL6;
-      qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL6 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL6 === void 0 ? void 0 : _qaLaboratoryTest$qaL6.push(qaLaboratoryTestReportId);
+      qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL6 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL6 === void 0 || _qaLaboratoryTest$qaL6.push(qaLaboratoryTestReportId);
       return qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.save();
     }).then(function () {
       return generateQaLaboratoryTestReportPdf(qaLaboratoryTestId);
@@ -1022,7 +1021,7 @@ var _default = function _default(io) {
     var filter = {
       _id: qaLaboratoryTestId
     };
-    var deleteFile = (req === null || req === void 0 ? void 0 : (_req$body3 = req.body) === null || _req$body3 === void 0 ? void 0 : _req$body3.file) === 'null';
+    var deleteFile = (req === null || req === void 0 || (_req$body3 = req.body) === null || _req$body3 === void 0 ? void 0 : _req$body3.file) === 'null';
     var update = req === null || req === void 0 ? void 0 : req.body;
     var reports;
     if (req !== null && req !== void 0 && req.file) {
@@ -1051,9 +1050,9 @@ var _default = function _default(io) {
       var handleOldFile = new Promise(function (resolve) {
         var sameAttachmentReports = [];
         for (var i = 0; i < reports.length; i++) {
-          var e = reports[i];
-          if (e.reportAttachmentFileName === reportAttachmentFileName) {
-            sameAttachmentReports.push(e);
+          var _e6 = reports[i];
+          if (_e6.reportAttachmentFileName === reportAttachmentFileName) {
+            sameAttachmentReports.push(_e6);
           }
         }
         if (req !== null && req !== void 0 && req.file && reportAttachmentFileName && sameAttachmentReports.length < 2 || deleteFile && sameAttachmentReports.length < 2) {
@@ -1086,7 +1085,7 @@ var _default = function _default(io) {
     var qaLaboratoryTestReportId;
     _LaboratoryTest["default"].findOne(filter).then(function (qaLaboratoryTest) {
       var _qaLaboratoryTest$qaL7;
-      qaLaboratoryTestReportId = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL7 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL7 === void 0 ? void 0 : _qaLaboratoryTest$qaL7.length) - 1];
+      qaLaboratoryTestReportId = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports[(qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL7 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL7 === void 0 ? void 0 : _qaLaboratoryTest$qaL7.length) - 1];
       var filter = {
         _id: qaLaboratoryTestReportId
       };
@@ -1122,9 +1121,9 @@ var _default = function _default(io) {
     var qaLaboratoryTestReportId;
     if (req !== null && req !== void 0 && req.file) {
       var _req$file7, _req$file8;
-      newDoc.reportAttachmentFileName = req === null || req === void 0 ? void 0 : (_req$file7 = req.file) === null || _req$file7 === void 0 ? void 0 : _req$file7.filename;
-      newDoc.reportAttachmentFileOriginalName = req === null || req === void 0 ? void 0 : (_req$file8 = req.file) === null || _req$file8 === void 0 ? void 0 : _req$file8.originalname;
-    } else if ((req === null || req === void 0 ? void 0 : (_req$body4 = req.body) === null || _req$body4 === void 0 ? void 0 : _req$body4.file) === 'null') {
+      newDoc.reportAttachmentFileName = req === null || req === void 0 || (_req$file7 = req.file) === null || _req$file7 === void 0 ? void 0 : _req$file7.filename;
+      newDoc.reportAttachmentFileOriginalName = req === null || req === void 0 || (_req$file8 = req.file) === null || _req$file8 === void 0 ? void 0 : _req$file8.originalname;
+    } else if ((req === null || req === void 0 || (_req$body4 = req.body) === null || _req$body4 === void 0 ? void 0 : _req$body4.file) === 'null') {
       newDoc.reportAttachmentFileName = null;
       newDoc.reportAttachmentFileOriginalName = null;
     }
@@ -1137,7 +1136,7 @@ var _default = function _default(io) {
       return _LaboratoryTest["default"].findOne(filter);
     }).then(function (qaLaboratoryTest) {
       var _qaLaboratoryTest$qaL8;
-      qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : (_qaLaboratoryTest$qaL8 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL8 === void 0 ? void 0 : _qaLaboratoryTest$qaL8.push(qaLaboratoryTestReportId);
+      qaLaboratoryTest === null || qaLaboratoryTest === void 0 || (_qaLaboratoryTest$qaL8 = qaLaboratoryTest.qaLaboratoryTestReports) === null || _qaLaboratoryTest$qaL8 === void 0 || _qaLaboratoryTest$qaL8.push(qaLaboratoryTestReportId);
       return qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.save();
     }).then(function () {
       return generateQaLaboratoryTestReportPdf(qaLaboratoryTestId);
@@ -1293,10 +1292,10 @@ var _default = function _default(io) {
           rows[3] = status;
           rows[4] = request !== null && request !== void 0 && request.requestDate ? new Date(request.requestDate) : '';
           rows[5] = (_request$requestNumbe = request === null || request === void 0 ? void 0 : request.requestNumber) !== null && _request$requestNumbe !== void 0 ? _request$requestNumbe : '';
-          rows[6] = (_request$requester$na = request === null || request === void 0 ? void 0 : (_request$requester = request.requester) === null || _request$requester === void 0 ? void 0 : _request$requester.name) !== null && _request$requester$na !== void 0 ? _request$requester$na : '';
-          rows[7] = (_request$requestAppro = request === null || request === void 0 ? void 0 : (_request$requestAppro2 = request.requestApprover) === null || _request$requestAppro2 === void 0 ? void 0 : _request$requestAppro2.name) !== null && _request$requestAppro !== void 0 ? _request$requestAppro : '';
+          rows[6] = (_request$requester$na = request === null || request === void 0 || (_request$requester = request.requester) === null || _request$requester === void 0 ? void 0 : _request$requester.name) !== null && _request$requester$na !== void 0 ? _request$requester$na : '';
+          rows[7] = (_request$requestAppro = request === null || request === void 0 || (_request$requestAppro2 = request.requestApprover) === null || _request$requestAppro2 === void 0 ? void 0 : _request$requestAppro2.name) !== null && _request$requestAppro !== void 0 ? _request$requestAppro : '';
           rows[8] = request !== null && request !== void 0 && request.requestReceiveDate ? new Date(request === null || request === void 0 ? void 0 : request.requestReceiveDate) : '';
-          rows[9] = (_request$requestRecei = request === null || request === void 0 ? void 0 : (_request$requestRecei2 = request.requestReceiver) === null || _request$requestRecei2 === void 0 ? void 0 : _request$requestRecei2.name) !== null && _request$requestRecei !== void 0 ? _request$requestRecei : '';
+          rows[9] = (_request$requestRecei = request === null || request === void 0 || (_request$requestRecei2 = request.requestReceiver) === null || _request$requestRecei2 === void 0 ? void 0 : _request$requestRecei2.name) !== null && _request$requestRecei !== void 0 ? _request$requestRecei : '';
           rows[10] = (_request$estimationCl = request === null || request === void 0 ? void 0 : request.estimationCloseDate) !== null && _request$estimationCl !== void 0 ? _request$estimationCl : '';
           rows[15] = "".concat(_url.pdfUrl, "QA Laboratory Test Request ").concat(String((_request$_id = request === null || request === void 0 ? void 0 : request._id) !== null && _request$_id !== void 0 ? _request$_id : ''), ".pdf");
           rows[16] = request !== null && request !== void 0 && request.requestAttachmentFileName ? "".concat(_url.uploadUrl).concat(request === null || request === void 0 ? void 0 : request.requestAttachmentFileName) : '-';
@@ -1305,8 +1304,8 @@ var _default = function _default(io) {
           var _report$reportNumber, _report$reporter$name, _report$reporter, _report$reportApprove, _report$reportApprove2, _report$_id;
           rows[11] = report !== null && report !== void 0 && report.reportDate ? new Date(report.reportDate) : '';
           rows[12] = (_report$reportNumber = report === null || report === void 0 ? void 0 : report.reportNumber) !== null && _report$reportNumber !== void 0 ? _report$reportNumber : '';
-          rows[13] = (_report$reporter$name = report === null || report === void 0 ? void 0 : (_report$reporter = report.reporter) === null || _report$reporter === void 0 ? void 0 : _report$reporter.name) !== null && _report$reporter$name !== void 0 ? _report$reporter$name : '';
-          rows[14] = (_report$reportApprove = report === null || report === void 0 ? void 0 : (_report$reportApprove2 = report.reportApprover) === null || _report$reportApprove2 === void 0 ? void 0 : _report$reportApprove2.name) !== null && _report$reportApprove !== void 0 ? _report$reportApprove : '';
+          rows[13] = (_report$reporter$name = report === null || report === void 0 || (_report$reporter = report.reporter) === null || _report$reporter === void 0 ? void 0 : _report$reporter.name) !== null && _report$reporter$name !== void 0 ? _report$reporter$name : '';
+          rows[14] = (_report$reportApprove = report === null || report === void 0 || (_report$reportApprove2 = report.reportApprover) === null || _report$reportApprove2 === void 0 ? void 0 : _report$reportApprove2.name) !== null && _report$reportApprove !== void 0 ? _report$reportApprove : '';
           rows[17] = "".concat(_url.pdfUrl, "QA Laboratory Test Report ").concat(String((_report$_id = report === null || report === void 0 ? void 0 : report._id) !== null && _report$_id !== void 0 ? _report$_id : ''), ".pdf");
           rows[18] = report !== null && report !== void 0 && report.reportAttachmentFileName ? "".concat(_url.uploadUrl).concat(report === null || report === void 0 ? void 0 : report.reportAttachmentFileName) : '-';
         } else {
@@ -1352,6 +1351,78 @@ var _default = function _default(io) {
       });
     });
   });
+  router.route('/regenerate-pdfs').post(function (_req, res) {
+    var qaLaboratoryTests = [];
+    _LaboratoryTest["default"].find().populate({
+      path: 'qaLaboratoryTestRequests',
+      model: 'qa.laboratory_test_requests',
+      populate: [{
+        path: 'requester',
+        model: 'users'
+      }, {
+        path: 'requestApprover',
+        model: 'users'
+      }, {
+        path: 'requestReceiver',
+        model: 'users'
+      }]
+    }).populate({
+      path: 'qaLaboratoryTestReports',
+      model: 'qa.laboratory_test_reports',
+      populate: [{
+        path: 'reporter',
+        model: 'users'
+      }, {
+        path: 'reportApprover',
+        model: 'users'
+      }]
+    }).lean().then(function (results) {
+      for (var i = 0; i < results.length; i++) {
+        var qaLaboratoryTest = results[i];
+        var qaLaboratoryTestRequests = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestRequests;
+        var qaLaboratoryTestReports = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest.qaLaboratoryTestReports;
+        var _e7 = {};
+        _e7.id = qaLaboratoryTest === null || qaLaboratoryTest === void 0 ? void 0 : qaLaboratoryTest._id;
+        _e7.requestIds = [];
+        for (var _i6 = 0; _i6 < qaLaboratoryTestRequests.length; _i6++) {
+          var _e7$requestIds;
+          var f = qaLaboratoryTestRequests[_i6];
+          (_e7$requestIds = _e7.requestIds) === null || _e7$requestIds === void 0 || _e7$requestIds.push(f === null || f === void 0 ? void 0 : f._id);
+        }
+        _e7.reportIds = [];
+        for (var _i7 = 0; _i7 < qaLaboratoryTestReports.length; _i7++) {
+          var _e7$reportIds;
+          var _f3 = qaLaboratoryTestReports[_i7];
+          (_e7$reportIds = _e7.reportIds) === null || _e7$reportIds === void 0 || _e7$reportIds.push(_f3 === null || _f3 === void 0 ? void 0 : _f3._id);
+        }
+        qaLaboratoryTests.push(_e7);
+      }
+      qaLaboratoryTests = qaLaboratoryTests.sort(function (a, b) {
+        return (b === null || b === void 0 ? void 0 : b.requestDate) - (a === null || a === void 0 ? void 0 : a.requestDate);
+      });
+      var promises = [];
+      qaLaboratoryTests.forEach(function (test) {
+        test.requestIds.forEach(function (requestId) {
+          promises.push(generateQaLaboratoryTestRequestPdf(requestId));
+        });
+        test.reportIds.forEach(function (reportId) {
+          promises.push(generateQaLaboratoryTestReportPdf(e.id, reportId));
+        });
+      });
+      Promise.all(promises).then(function () {
+        console.log('All PDFs regenerated successfully.');
+      })["catch"](function (err) {
+        (0, _log.log)(err);
+      });
+      return res.status(200).json({
+        success: !!results,
+        message: null,
+        data: 'Processing'
+      });
+    })["catch"](function (err) {
+      (0, _log.log)(err);
+      res.status(500).json(err);
+    });
+  });
   return router;
 };
-exports["default"] = _default;

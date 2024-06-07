@@ -313,7 +313,7 @@ export default (io) => {
 		});
 	};
 
-	const generateQaLaboratoryTestReportPdf = function (qaLaboratoryTestId) {
+	const generateQaLaboratoryTestReportPdf = function (qaLaboratoryTestId, id) {
 		return new Promise((resolve) => {
 			LaboratoryTest.findById(qaLaboratoryTestId).then((qaLaboratoryTest) => {
 				LaboratoryTestRequest.findById(
@@ -325,9 +325,10 @@ export default (io) => {
 					.populate('requestApprover')
 					.then((qaLaboratoryTestRequest) => {
 						LaboratoryTestReport.findById(
-							qaLaboratoryTest?.qaLaboratoryTestReports[
-								qaLaboratoryTest?.qaLaboratoryTestReports?.length - 1
-							]
+							id ??
+								qaLaboratoryTest?.qaLaboratoryTestReports[
+									qaLaboratoryTest?.qaLaboratoryTestReports?.length - 1
+								]
 						)
 							.populate('reporter')
 							.populate('reportApprover')
@@ -1939,6 +1940,168 @@ export default (io) => {
 				workbook.xlsx.write(res).then(function () {
 					res.end();
 				});
+			});
+	});
+
+	router.route('/regenerate-pdfs').post((_req, res) => {
+		let qaLaboratoryTests = [];
+
+		LaboratoryTest.find()
+			.populate({
+				path: 'qaLaboratoryTestRequests',
+				model: 'qa.laboratory_test_requests',
+				populate: [
+					{
+						path: 'requester',
+						model: 'users',
+					},
+					{
+						path: 'requestApprover',
+						model: 'users',
+					},
+					{
+						path: 'requestReceiver',
+						model: 'users',
+					},
+				],
+			})
+			.populate({
+				path: 'qaLaboratoryTestReports',
+				model: 'qa.laboratory_test_reports',
+				populate: [
+					{
+						path: 'reporter',
+						model: 'users',
+					},
+					{
+						path: 'reportApprover',
+						model: 'users',
+					},
+				],
+			})
+			.lean()
+			.then((results) => {
+				for (let i = 0; i < results.length; i++) {
+					const qaLaboratoryTest = results[i];
+					const qaLaboratoryTestRequests =
+						qaLaboratoryTest?.qaLaboratoryTestRequests;
+					const qaLaboratoryTestReports =
+						qaLaboratoryTest?.qaLaboratoryTestReports;
+
+					const e = {};
+
+					e.id = qaLaboratoryTest?._id;
+					e.requestIds = [];
+
+					for (let i = 0; i < qaLaboratoryTestRequests.length; i++) {
+						const f = qaLaboratoryTestRequests[i];
+
+						e.requestIds?.push(f?._id);
+					}
+
+					e.reportIds = [];
+
+					for (let i = 0; i < qaLaboratoryTestReports.length; i++) {
+						const f = qaLaboratoryTestReports[i];
+
+						e.reportIds?.push(f?._id);
+					}
+
+					qaLaboratoryTests.push(e);
+				}
+
+				qaLaboratoryTests = qaLaboratoryTests.sort(
+					(a, b) => b?.requestDate - a?.requestDate
+				);
+
+				const requestPromises = [];
+				const reportPromises = [];
+
+				qaLaboratoryTests.forEach((test) => {
+					test.requestIds.forEach((requestId) => {
+						requestPromises.push(generateQaLaboratoryTestRequestPdf(requestId));
+					});
+
+					test.reportIds.forEach((reportId) => {
+						reportPromises.push(() =>
+							generateQaLaboratoryTestReportPdf(test.id, reportId)
+						);
+					});
+				});
+
+				res.status(200).json({
+					success: true,
+					message: 'Processing PDFs.',
+					data: null,
+				});
+
+				const chunkArray = (array, size) => {
+					const result = [];
+
+					for (let i = 0; i < array.length; i += size) {
+						result.push(array.slice(i, i + size));
+					}
+
+					return result;
+				};
+
+				const processPromisesInBatches = async (
+					promises,
+					batchSize = 10,
+					logFrequency = 1000
+				) => {
+					const chunks = chunkArray(promises, batchSize);
+					let totalProcessed = 0;
+
+					for (let i = 0; i < chunks.length; i++) {
+						await Promise.all(chunks[i]);
+						totalProcessed += chunks[i].length;
+
+						if (
+							totalProcessed % logFrequency < batchSize ||
+							totalProcessed === promises.length
+						) {
+							console.log(
+								`Request PDF ${totalProcessed} of ${promises.length} processed successfully.`
+							);
+						}
+					}
+				};
+
+				const processPromisesSequentiallyWithDelay = async (
+					promises,
+					delay = 1500
+				) => {
+					for (let i = 0; i < promises.length; i++) {
+						await promises[i]();
+						if ((i + 1) % 100 === 0 || i === promises.length - 1) {
+							console.log(
+								`Report PDF ${i + 1} of ${
+									promises.length
+								} processed successfully.`
+							);
+						}
+						if (i < promises.length - 1) {
+							await new Promise((resolve) => setTimeout(resolve, delay));
+						}
+					}
+				};
+
+				(async () => {
+					try {
+						await processPromisesInBatches(requestPromises);
+						console.log('All request PDFs generated successfully.');
+
+						await processPromisesSequentiallyWithDelay(reportPromises);
+						console.log('All report PDFs generated successfully.');
+					} catch (err) {
+						console.log(err);
+					}
+				})();
+			})
+			.catch((err) => {
+				log(err);
+				res.status(500).json(err);
 			});
 	});
 

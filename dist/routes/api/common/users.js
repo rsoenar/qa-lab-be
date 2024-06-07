@@ -12,11 +12,11 @@ var _auth = require("../../../utils/auth");
 var _log = require("../../../utils/log");
 var _excluded = ["_id", "__v", "username", "password", "newUser", "gender", "education", "major", "birthDate", "creationDate", "duty", "location"],
   _excluded2 = ["id"];
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], t.indexOf(o) >= 0 || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
+function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (e.indexOf(n) >= 0) continue; t[n] = r[n]; } return t; }
 var router = (0, _express.Router)();
-var _default = function _default(io) {
+var _default = exports["default"] = function _default(io) {
   router.route('/all').get(function (_req, res) {
     _User["default"].find().populate('authorization').lean().then(function (results) {
       var users;
@@ -26,8 +26,8 @@ var _default = function _default(io) {
           if (user.authorization) {
             var _user$authorization, _user$authorization2, _user$authorization3;
             user.authorization.id = String((_user$authorization = user.authorization) === null || _user$authorization === void 0 ? void 0 : _user$authorization._id);
-            (_user$authorization2 = user.authorization) === null || _user$authorization2 === void 0 ? true : delete _user$authorization2._id;
-            (_user$authorization3 = user.authorization) === null || _user$authorization3 === void 0 ? true : delete _user$authorization3.__v;
+            (_user$authorization2 = user.authorization) === null || _user$authorization2 === void 0 || delete _user$authorization2._id;
+            (_user$authorization3 = user.authorization) === null || _user$authorization3 === void 0 || delete _user$authorization3.__v;
           }
           var _id = user._id,
             __v = user.__v,
@@ -228,4 +228,3 @@ var _default = function _default(io) {
   });
   return router;
 };
-exports["default"] = _default;

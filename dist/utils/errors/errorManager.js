@@ -2,7 +2,7 @@
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 var _NotFoundError = _interopRequireDefault(require("./NotFoundError"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function handleError(err, res) {
   var status = err.status,
     statusCode = err.statusCode,

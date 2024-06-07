@@ -1,7 +1,7 @@
 "use strict";
 
 var _moment = _interopRequireDefault(require("moment"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var today = new Date();
 var dd = parseInt(String(today.getDate()).padStart(2, '0'));
 var mm = parseInt(String(today.getMonth() + 1).padStart(2, '0'));

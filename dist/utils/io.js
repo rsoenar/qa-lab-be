@@ -4,7 +4,7 @@ var _multer = _interopRequireDefault(require("multer"));
 var _nodemailer = _interopRequireDefault(require("nodemailer"));
 var _path = _interopRequireDefault(require("path"));
 var _uuid = require("uuid");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 // Mail transporter
 var iaeMailTransporter = _nodemailer["default"].createTransport({
   host: 'mail.indonesian-aerospace.com',
